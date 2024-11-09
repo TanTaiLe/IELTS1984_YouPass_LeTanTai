@@ -11,12 +11,11 @@ app.get('/api/data', (req, res) => {
   res.json(data);
 });
 
-// app.post('/api/data', (req, res) => {
-//   const data = readData();
-//   data.push(req.body);
-//   writeData(data);
-//   res.status(201).json(req.body);
-// });
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-const PORT = 5000;
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+});
+
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server connected to http://localhost:${PORT}`));
