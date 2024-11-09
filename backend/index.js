@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path')
+const path = require('path');
+const process = require('process')
 const { readData, writeData } = require('./api');
 
 const app = express();
@@ -19,4 +20,4 @@ app.get('*', (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server connected to http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server connected to ${PORT}`));
