@@ -1,0 +1,20 @@
+.question {
+  input {
+    width: 100px;
+    text-align: center;
+  }
+  table {
+    margin-top: 16px;
+  }
+}
+.answers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  &__item {
+    display: block;
+    cursor: pointer;
+    background-color: #eee;
+    border: 1px solid #ddd;
+  }
+}
