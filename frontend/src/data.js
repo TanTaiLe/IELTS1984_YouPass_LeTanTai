@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // const DATA_URL = 'http://localhost:5000/api/data'
-const DATA_URL = 'https://ielts1984-youpass-letantai.onrender.com/'
+const DATA_URL = 'https://ielts1984-youpass-letantai.onrender.com/api/data'
 
 export const getData = async () => {
   try {
