@@ -82,12 +82,14 @@ function App() {
       }
     }
 
+    fetchData();
+  }, [])
+
+  useEffect(() => {
     if (inputs.length) {
       addDropEvents()
       inputsRef.current = document.querySelectorAll('input')
     }
-
-    fetchData();
   }, [inputs, addDropEvents])
 
   const DragWord = ({ word, color }) =>
