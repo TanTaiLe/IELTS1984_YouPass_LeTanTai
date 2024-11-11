@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
+// const path = require('path');
+const path = './data.json';
 const process = require('process')
 const { readData } = require('./api');
 
@@ -9,7 +10,6 @@ app.use(express.json());
 app.use(cors());
 
 app.get('/api/data', (req, res) => {
-
   try {
     const data = readData();
     res.json(data);

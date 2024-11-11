@@ -6,8 +6,4 @@ const readData = () => {
   return JSON.parse(data);
 };
 
-const writeData = (data) => {
-  fs.writeFileSync(path, JSON.stringify(data, null, 2));
-};
-
-module.exports = { readData, writeData };
+module.exports = { readData };
