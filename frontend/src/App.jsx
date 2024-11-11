@@ -72,15 +72,22 @@ function App() {
   }
 
   useEffect(() => {
-    getData().then(res => {
-      setData(res)
-      setInputs(res.blanks)
-    })
+    const fetchData = async () => {
+      try {
+        const res = await getData()
+        setData(res)
+        setInputs(res.blanks)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
 
     if (inputs.length) {
       addDropEvents()
       inputsRef.current = document.querySelectorAll('input')
     }
+
+    fetchData();
   }, [inputs, addDropEvents])
 
   const DragWord = ({ word, color }) =>
