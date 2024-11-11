@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-// const path = require('path');
-const path = './data.json';
+const path = require('path');
 const process = require('process')
 const { readData } = require('./api');
 
@@ -13,7 +12,6 @@ app.get('/api/data', (req, res) => {
   try {
     const data = readData();
     res.json(data);
-    res.json({ message: 'Data retrieved successfully' });
   } catch (error) {
     console.error('Error occurred:', error);
     res.status(500).json({ error: 'Internal Server Error' });

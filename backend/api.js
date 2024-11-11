@@ -1,8 +1,11 @@
 const fs = require('fs');
-const path = './data.json';
+const path = require('path');
+// const path = './data.json';
+// const path = 'data.json';
+const dataPath = path.resolve(__dirname, 'data.json');
 
 const readData = () => {
-  const data = fs.readFileSync(path, 'utf-8');
+  const data = fs.readFileSync(dataPath, 'utf-8');
   return JSON.parse(data);
 };
 
