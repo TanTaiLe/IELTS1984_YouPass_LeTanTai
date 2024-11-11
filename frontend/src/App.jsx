@@ -18,7 +18,7 @@ function App() {
       string += part
       if (i < inputs.length) {
         const { id, position, type } = inputs[i]
-        string += `<input id="${id}" name="${position}" type="${type}" ref="${el => inputsRef.current[i] = el}" />`
+        string += `<div class="question__input" ref="${el => inputsRef.current[i] = el}"><input id="${id}" name="${position}" type="${type}" /></div>`
       }
       return string
     }, '')
@@ -30,25 +30,30 @@ function App() {
     e.preventDefault()
 
     const draggedWord = e.dataTransfer.getData("text")
-    e.target.value = draggedWord
     console.log(draggedWord)
+    const inputElement = inputsRef.current[i]?.querySelector("input")
 
-    setAnswers(prev => {
-      const newAnswers = [...prev];
-      newAnswers[i] = draggedWord;
-      console.log(newAnswers, draggedWord)
-      return newAnswers;
-    });
+    if (inputElement) {
+      inputElement.value = draggedWord;
+
+      setAnswers(prev => {
+        const newAnswers = [...prev];
+        newAnswers[i] = draggedWord;
+        console.log(newAnswers, draggedWord)
+        return newAnswers;
+      });
+    }
+
   }
 
   const addDropEvents = useCallback(() => {
     console.log('add drop event')
-    inputsRef.current.forEach((input, i) => {
-      console.log(input, i)
-      if (input && !input.hasEventListener) {
-        input.addEventListener('drop', e => handleDrop(e, i))
-        input.addEventListener('dragover', e => e.preventDefault())
-        input.hasEventListener = true
+    inputsRef.current.forEach((wrapper, i) => {
+      console.log(wrapper, i)
+      if (wrapper && !wrapper.hasEventListener) {
+        wrapper.addEventListener('drop', e => handleDrop(e, i))
+        wrapper.addEventListener('dragover', e => e.preventDefault())
+        wrapper.hasEventListener = true
       }
     })
   }, [inputs])
@@ -97,7 +102,7 @@ function App() {
   useEffect(() => {
     if (inputs.length) {
       addDropEvents()
-      inputsRef.current = document.querySelectorAll('input')
+      inputsRef.current = document.querySelectorAll('.question__input')
     }
   }, [inputs, addDropEvents])
 
