@@ -2,15 +2,22 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const process = require('process')
-const { readData, writeData } = require('./api');
+const { readData } = require('./api');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 app.get('/api/data', (req, res) => {
-  const data = readData();
-  res.json(data);
+
+  try {
+    const data = readData();
+    res.json(data);
+    res.json({ message: 'Data retrieved successfully' });
+  } catch (error) {
+    console.error('Error occurred:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
