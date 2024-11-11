@@ -50,8 +50,11 @@ function App() {
   }, [inputs])
 
   const checkAnswer = () => {
+
     inputs.flatMap((input, i) => {
       let result = null
+
+      console.log(answers[i])
 
       if (answers[i] === undefined) {
         result = { isCorrect: false, msg: `Blank ${i + 1} is empty` }
@@ -62,6 +65,8 @@ function App() {
           result = { isCorrect: false, msg: `Blank ${i + 1} is incorrect` }
         }
       }
+
+      console.log(result)
 
       setResults(prev => {
         const newResults = [...prev];
