@@ -31,6 +31,7 @@ function App() {
 
     const draggedWord = e.dataTransfer.getData("text")
     e.target.value = draggedWord
+    console.log(draggedWord)
 
     setAnswers(prev => {
       const newAnswers = [...prev];
