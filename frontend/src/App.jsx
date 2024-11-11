@@ -41,7 +41,9 @@ function App() {
   }
 
   const addDropEvents = useCallback(() => {
+    console.log('add drop event')
     inputsRef.current.forEach((input, i) => {
+      console.log(input, i)
       if (input && !input.hasEventListener) {
         input.addEventListener('drop', e => handleDrop(e, i))
         input.addEventListener('dragover', e => e.preventDefault())
