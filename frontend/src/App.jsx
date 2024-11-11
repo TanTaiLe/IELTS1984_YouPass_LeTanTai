@@ -35,6 +35,7 @@ function App() {
     setAnswers(prev => {
       const newAnswers = [...prev];
       newAnswers[i] = draggedWord;
+      console.log(newAnswers, draggedWord)
       return newAnswers;
     });
   }
