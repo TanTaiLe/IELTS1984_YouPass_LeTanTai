@@ -11,6 +11,7 @@ function App() {
   const [results, setResults] = useState(Array(inputs.length).fill(null))
   const constraintsRef = useRef(null)
   const inputsRef = useRef([])
+  const questionRef = useRef(null)
 
   const replaceInput = (inputs) => {
     const parts = data.paragraph.split('[_input]')
@@ -18,7 +19,7 @@ function App() {
       string += part
       if (i < inputs.length) {
         const { id, position, type } = inputs[i]
-        string += `<div class="question__input" ref="${el => inputsRef.current[i] = el}"><input id="${id}" name="${position}" type="${type}" /></div>`
+        string += `<input id="${id}" name="${position}" type="${type}" ref="${el => inputsRef.current[i] = el}"/>`
       }
       return string
     }, '')
@@ -30,33 +31,29 @@ function App() {
     e.preventDefault()
 
     const draggedWord = e.dataTransfer.getData("text")
+    e.target.value = draggedWord
     console.log(draggedWord)
-    const inputElement = inputsRef.current[i]?.querySelector("input")
 
-    if (inputElement) {
-      inputElement.value = draggedWord;
-
-      setAnswers(prev => {
-        const newAnswers = [...prev];
-        newAnswers[i] = draggedWord;
-        console.log(newAnswers, draggedWord)
-        return newAnswers;
-      });
-    }
+    setAnswers(prev => {
+      const newAnswers = [...prev];
+      newAnswers[i] = draggedWord;
+      console.log(newAnswers, draggedWord)
+      return newAnswers;
+    });
 
   }
 
-  const addDropEvents = useCallback(() => {
-    console.log('add drop event')
-    inputsRef.current.forEach((wrapper, i) => {
-      console.log(wrapper, i)
-      if (wrapper && !wrapper.hasEventListener) {
-        wrapper.addEventListener('drop', e => handleDrop(e, i))
-        wrapper.addEventListener('dragover', e => e.preventDefault())
-        wrapper.hasEventListener = true
-      }
-    })
-  }, [inputs])
+  // const addDropEvents = useCallback(() => {
+  //   console.log('add drop event')
+  //   inputsRef.current.forEach((input, i) => {
+  //     console.log(input, i)
+  //     if (input && !input.hasEventListener) {
+  //       input.addEventListener('drop', e => handleDrop(e, i))
+  //       input.addEventListener('dragover', e => e.preventDefault())
+  //       input.hasEventListener = true
+  //     }
+  //   })
+  // }, [inputs])
 
   const checkAnswer = () => {
 
@@ -100,11 +97,19 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (inputs.length) {
-      addDropEvents()
-      inputsRef.current = document.querySelectorAll('.question__input')
+    if (questionRef.current && inputs.length) {
+      // addDropEvents()
+      const inputsGroup = document.querySelectorAll('input')
+      inputsGroup.forEach((input, i) => {
+        console.log(input, i)
+        if (input && !input.hasEventListener) {
+          input.addEventListener('drop', e => handleDrop(e, i))
+          input.addEventListener('dragover', e => e.preventDefault())
+          input.hasEventListener = true
+        }
+      })
     }
-  }, [inputs, addDropEvents])
+  }, [inputs, questionRef])
 
   const DragWord = ({ word, color }) =>
     <motion.div style={{ display: 'inline-block' }} drag dragConstraints={constraintsRef}>
@@ -122,7 +127,10 @@ function App() {
       {data &&
         <motion.div className='d-flex flex-column row-gap-3' ref={constraintsRef}>
 
-          <div className="question" dangerouslySetInnerHTML={inputs.length > 0 && replaceInput(inputs)} />
+          <div
+            ref={questionRef}
+            className="question"
+            dangerouslySetInnerHTML={inputs.length > 0 && replaceInput(inputs)} />
 
           <div className="answers w-25 column-gap-2">
             {data.dragWords.map(w =>
